@@ -1,0 +1,56 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once 'conexion.php';
+require_once 'ver_tablas.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Empleados</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Empleados por Zona</h1>
+        
+        <div class="filter-section">
+            <label for="estado">Seleccione una zona:</label>
+            <select id="estado">
+                <option value="">Seleccione un estado...</option>
+                <?php
+                try {
+                    $estados = obtenerEstados();
+                    foreach ($estados as $estado) {
+                        echo "<option value='" . htmlspecialchars($estado['id_estado']) . "'>" . 
+                             htmlspecialchars($estado['estado']) . "</option>";
+                    }
+                } catch (Exception $e) {
+                    echo "<!-- Error al cargar estados: " . htmlspecialchars($e->getMessage()) . " -->";
+                }
+                ?>
+            </select>
+        </div>
+
+        <div class="results-section">
+            <table id="empleados-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Puesto</th>
+                        <th>Promedio Calificaciones</th>
+                    </tr>
+                </thead>
+                <tbody id="empleados-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
